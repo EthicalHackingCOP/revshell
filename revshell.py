@@ -1,16 +1,58 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #revshells is a tool to quickly print a collection of reverse shells usign diferent commands and languajes
 #for quick access copy it to your path (/bin, /usr/bin, /usr/local/bin, etc)
 #by dplastico (thanks to vay3t for teh heads up)
 import sys
 import socket
+import optparse
+import re
 
-# usage
-if len(sys.argv) != 3:
-    print("[!] usage: "+sys.argv[0]+" <IP> <PORT>")
-    sys.exit(1)
+def start():
+    parser = optparse.OptionParser('usage %prog ' + \
+                                   '<IP> <PORT>')
+    parser.add_option('-s', '--shell', dest='shellopt', type='string', \
+                      help='Insert shell number')
+    (options, args) = parser.parse_args()
+
+    try:
+        shell = options.shellopt
+    except:
+        shell = None
+
+    if len(sys.argv) < 3:
+        print("[!] usage: "+sys.argv[0]+" <IP> <PORT>")
+        sys.exit(1)
+
+    ipDst = None
+    portDst = None
+
+    ip_patron = ('^(?:(?:25[0-5]|2[0-4][0-9]|'
+          '[01]?[0-9][0-9]?)\.){3}'
+          '(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
+    ip = re.compile(ip_patron)    
+
+    if (ip.search(sys.argv[1])):
+        if (sys.argv[2].isnumeric() and (1 <= (int)sys.argv[2] <= 65535) ):
+            print("ok 1")
+        else:
+            print("[!] Invalid Port")
+            exit(0)
+    elif(ip.search(sys.argv[2])):
+        if (sys.argv[1].isnumeric() and (1 <= (int)sys.argv[1] <= 65535) ):
+            print("ok 2")
+        else:
+            print("[!] Invalid Port")
+            exit(0)
+
+
+start()
+# # usage
+# if len(sys.argv) != 3:
+#     print("[!] usage: "+sys.argv[0]+" <IP> <PORT>")
+#     sys.exit(1)
 
 # Vars
+'''
 ipDst = sys.argv[1]
 portDst = int(sys.argv[2])
 
@@ -62,5 +104,5 @@ print("\n******** Reverse Shells Linux *******\n")
 for line in (a,b,c,d,e,f,g,h,i,l,m,n,o,p,q,r,s,t,u):
 	print("[\033[1;34m*\033[0m] "+line)
 
-
+'''
                               
